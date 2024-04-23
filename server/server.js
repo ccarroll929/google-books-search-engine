@@ -4,9 +4,12 @@ const db = require('./config/connection');
 const routes = require('./routes');
 const { authMiddleware } = require("./utils/auth");
 const { ApolloServer } = require("apollo-server-express");
+const { typeDefs, resolvers } = require("./schemas");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Setting up GraphQL server using Apollo server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -15,6 +18,9 @@ const server = new ApolloServer({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.get("/", (req, res) => {
+  res.sendFile(path.join(_dirname, "../client/build"));
+})
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {
@@ -33,3 +39,6 @@ db.once('open', () => {
   console.log(`GraphQL at http://localhost:${PORT}${server.graphqlPath}`)
   }
 );
+
+// Starting the Apollo server
+startApolloServer(typeDefs, resolvers);
