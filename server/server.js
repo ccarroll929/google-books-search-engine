@@ -2,7 +2,11 @@ const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
 const routes = require('./routes');
+
+// Importing our authMiddleware from utils
 const { authMiddleware } = require("./utils/auth");
+
+// Importing Apollo server and schemas
 const { ApolloServer } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./schemas");
 
@@ -18,16 +22,16 @@ const server = new ApolloServer({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.get("/", (req, res) => {
-  res.sendFile(path.join(_dirname, "../client/build"));
-})
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
-app.use(routes);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+})
+
 
 const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
