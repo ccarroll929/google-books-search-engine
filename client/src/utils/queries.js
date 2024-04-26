@@ -8,12 +8,12 @@ me {
     email
     bookCount
     savedBooks {
-        bookId
         authors
+        bookId
         description
-        title
         image
         link
+        title
         }
     }
 }

@@ -31,31 +31,32 @@ mutation saveBook($bookData: BookInput!) {
         username
         email
         savedBooks {
-            bookId
             authors
+            bookId
             description
-            title
             image
             link
+            title
             }
     }
 }
 `;
 
 export const REMOVE_BOOK = gql`
-mutation removeBook($bookId: ID!) {
-    removeBook(bookId: $bookId) {
-        _id
-        username
-        email
-        savedBooks {
-            bookId
-            authors
-            description
-            title
-            image
-            link
-                }
+    mutation removeBook($bookId: String!) {
+        removeBook(bookId: $bookId) {
+            _id
+            username
+            email
+            bookCount
+            savedBooks {
+                authors
+                bookId
+                description
+                image
+                link
+                title
+            }
+        }
     }
-}
 `;

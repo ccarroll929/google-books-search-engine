@@ -10,7 +10,6 @@ import {
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
-import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 
 const SavedBooks = () => {
@@ -19,26 +18,18 @@ const SavedBooks = () => {
   console.log(userData);
   const [removeBook] = useMutation(REMOVE_BOOK);
 
-  const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
-      return false;
-    }
-
+  // create function that accepts the book"s mongo _id value as param and deletes the book from the database
+  async function handleDeleteBook(bookId) {
     try {
-      const { user } = await removeBook({
-        variables: {
-          bookId: bookId,
-        },
+      await removeBook({
+        variables: {bookId: bookId}
       });
-
-      userData = user;
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
-  };
+  }
+
 
   // if data isn't here yet, say so
   if (loading) {
@@ -78,9 +69,8 @@ const SavedBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className="btn-block btn-danger"
-                    onClick={() => handleDeleteBook(book.bookId)}
-                  >
-                    Delete this Book!
+                    onClick={() => handleDeleteBook(book.bookId)}>
+                  Delete this Book!
                   </Button>
                 </Card.Body>
               </Card>
