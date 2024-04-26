@@ -8,11 +8,11 @@ import {
   Row
 } from 'react-bootstrap';
 import { searchGoogleBooks } from '../utils/API';
+import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import Auth from '../utils/auth';
 
 // Importing our useMutation hook from Apollo, book IDs from local storage, and our SAVE_BOOK mutation
 import { useMutation } from "@apollo/client";
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { SAVE_BOOK } from "../utils/mutations";
 
 const SearchBooks = () => {
@@ -121,10 +121,10 @@ const SearchBooks = () => {
             : 'Search for a book to begin'}
         </h2>
         <Row>
-        <Col md="4">
           {searchedBooks.map((book) => {
             return (
-                <Card key={book.bookId} border='dark'>
+              <Col key={book.bookId}  md="4">
+                <Card border='dark'>
                   {book.image ? (
                     <Card.Img 
                     src={book.image} 
@@ -148,9 +148,9 @@ const SearchBooks = () => {
                     )}
                   </Card.Body>
                 </Card>
+                </Col>
             );
           })}
-          </Col>
     </Row>
 </Container>
     </>
