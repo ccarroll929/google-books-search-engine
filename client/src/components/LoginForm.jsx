@@ -1,28 +1,18 @@
-// see SignupForm.js for comments
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-// Importing useMutation hook from Apollo and our LOGIN_USER mutation
-import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from '../utils/mutations';
-
 import Auth from '../utils/auth';
+
+// Importing useMutation 
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-
-// Applying the useMutation hook with LOGIN_USER as its argument
-  const [login, { error }] = useMutation(LOGIN_USER);
-
-  useEffect(() => {
-    if (error) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
-    }
-  }, [error]);
+  
+  // Replaced RESTful API into a GraphQL API 
+  const [login, { loading }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,6 +22,7 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    // Checking if all form fields contain user input
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -39,25 +30,28 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await login(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      console.log(data);
+      const {data} = await login(
+        {
+          variables: userFormData,
+        }
+      );
       Auth.login(data.login.token);
-  } catch (err) {
+    } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
 
-    // clear form values
+    // Clear form inputs if successfully
     setUserFormData({
-      email: "",
-      password: "",
+      username: '',
+      email: '',
+      password: '',
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -65,7 +59,7 @@ const LoginForm = () => {
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert>
-        <Form.Group className='mb-3'>
+        <Form.Group>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
             type='text'
@@ -78,7 +72,7 @@ const LoginForm = () => {
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className='mb-3'>
+        <Form.Group>
           <Form.Label htmlFor='password'>Password</Form.Label>
           <Form.Control
             type='password'
