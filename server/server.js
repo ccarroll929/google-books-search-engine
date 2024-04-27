@@ -18,6 +18,7 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
+  cache: "bounded",
   context: authMiddleware,
 })
 
@@ -40,7 +41,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
 }
 db.once('open', () => {
   app.listen(PORT, () => 
-  console.log(`🌍 Now listening on localhost:${PORT}`));
+  console.log(`🌍 API Server running on port ${PORT}`));
   console.log(`GraphQL at http://localhost:${PORT}${apolloServer.graphqlPath}`)
   }
 );
