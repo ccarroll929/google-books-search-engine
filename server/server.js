@@ -11,7 +11,7 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./schemas");
 
 const app = express();
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 8080;
 
 // Setting up GraphQL server using Apollo server
 const apolloServer = new ApolloServer({
