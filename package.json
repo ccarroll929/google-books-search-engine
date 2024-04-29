@@ -9,7 +9,7 @@
     "install": "cd server && npm i && cd ../client && npm i",
     "build": "cd client && npm run build",
     "render-build": "npm install && npm run build",
-    "prod": "NODE_ENV=production nodemon server.js"
+    "prod": "NODE_ENV=production node server.js"
   },
   "keywords": [],
   "author": "",
