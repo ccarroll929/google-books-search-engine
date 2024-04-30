@@ -5,7 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from "@apo
 import { setContext} from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: 'https://google-books-search-engine-wffe.onrender.com/graphql',
 });
 
 const authLink = setContext((_, { headers })=>{
