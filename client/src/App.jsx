@@ -3,8 +3,9 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from "@apollo/client";
 import { setContext} from '@apollo/client/link/context';
+
 const httpLink = createHttpLink({
-  uri: "localhost:3001/graphql",
+  uri: 'http://localhost:3001/graphql',
 });
 
 const authLink = setContext((_, { headers })=>{
