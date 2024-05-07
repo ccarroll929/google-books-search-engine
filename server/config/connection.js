@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://ccarroll0528:vLT2dDmZSKWaeThw@googlebooks.wlexjm2.mongodb.net/",
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks"
 ).catch ((err) => {
     console.error(err);
 })
